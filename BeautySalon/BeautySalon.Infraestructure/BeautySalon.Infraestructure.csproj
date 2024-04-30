@@ -19,4 +19,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BeautySalon.Domain\BeautySalon.Domain.csproj" />
+  </ItemGroup>
+  
 </Project>

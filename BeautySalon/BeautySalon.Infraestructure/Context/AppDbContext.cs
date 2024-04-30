@@ -1,11 +1,13 @@
+using BeautySalon.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalon.Infraestructure.Context;
 
 public class AppDbContext : DbContext
 {
-    public AppDbContext(Parameters)
-    {
-        
-    }       
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    { }
+
+    public DbSet<Costumer> Costumer { get; set; }
+    public DbSet<Reserve> Reserves { get; set; }
 }
