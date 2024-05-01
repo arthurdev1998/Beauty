@@ -22,5 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\BeautySalon.Domain\BeautySalon.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
   
 </Project>

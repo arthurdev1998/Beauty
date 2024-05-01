@@ -3,16 +3,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace BeautySalon.Domain.Entities;
 
 [Table("costumer")]
-public class Costumer
+public class Costumer : User
 {
     [Column("cod_serial_costumer")]
     public int Id { get; set; }
 
+    [Column("cod_serial_userid")]
+    public int UserId { get; set; }
+
     [Column("name")]
     public string? Name { get; set; }
-
-    [Column("email")]
-    public string? Email { get; set; }
 
     [Column("phone")]
     public string? Phone { get; set; }

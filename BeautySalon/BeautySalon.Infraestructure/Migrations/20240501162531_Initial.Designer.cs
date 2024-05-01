@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BeautySalon.Infraestructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240430034031_Initial")]
+    [Migration("20240501162531_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -24,36 +24,6 @@ namespace BeautySalon.Infraestructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("BeautySalon.Domain.Entities.Costumer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("cod_serial_costumer");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Cpf")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("cpf");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("email");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("phone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("costumer");
-                });
 
             modelBuilder.Entity("BeautySalon.Domain.Entities.Reserve", b =>
                 {
@@ -91,6 +61,61 @@ namespace BeautySalon.Infraestructure.Migrations
                     b.ToTable("Reserves");
                 });
 
+            modelBuilder.Entity("BeautySalon.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("cod_serial_usuario");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nome");
+
+                    b.Property<byte[]>("PasswordHash")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("passwordhash");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .HasColumnType("varbinary(max)")
+                        .HasColumnName("passwordsalt");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("BeautySalon.Domain.Entities.Costumer", b =>
+                {
+                    b.HasBaseType("BeautySalon.Domain.Entities.User");
+
+                    b.Property<string>("Cpf")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("cpf");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("phone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("cod_serial_userid");
+
+                    b.ToTable("costumer");
+                });
+
             modelBuilder.Entity("BeautySalon.Domain.Entities.Reserve", b =>
                 {
                     b.HasOne("BeautySalon.Domain.Entities.Costumer", "Costumers")
@@ -98,6 +123,15 @@ namespace BeautySalon.Infraestructure.Migrations
                         .HasForeignKey("CostumerId");
 
                     b.Navigation("Costumers");
+                });
+
+            modelBuilder.Entity("BeautySalon.Domain.Entities.Costumer", b =>
+                {
+                    b.HasOne("BeautySalon.Domain.Entities.User", null)
+                        .WithOne()
+                        .HasForeignKey("BeautySalon.Domain.Entities.Costumer", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BeautySalon.Domain.Entities.Costumer", b =>

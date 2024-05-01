@@ -12,19 +12,40 @@ namespace BeautySalon.Infraestructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    cod_serial_usuario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    passwordhash = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    passwordsalt = table.Column<byte[]>(type: "varbinary(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.cod_serial_usuario);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "costumer",
                 columns: table => new
                 {
-                    cod_serial_costumer = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    cod_serial_usuario = table.Column<int>(type: "int", nullable: false),
+                    cod_serial_userid = table.Column<int>(type: "int", nullable: false),
                     name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     phone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     cpf = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_costumer", x => x.cod_serial_costumer);
+                    table.PrimaryKey("PK_costumer", x => x.cod_serial_usuario);
+                    table.ForeignKey(
+                        name: "FK_costumer_Users_cod_serial_usuario",
+                        column: x => x.cod_serial_usuario,
+                        principalTable: "Users",
+                        principalColumn: "cod_serial_usuario",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,7 +67,7 @@ namespace BeautySalon.Infraestructure.Migrations
                         name: "FK_Reserves_costumer_cod_costurmer",
                         column: x => x.cod_costurmer,
                         principalTable: "costumer",
-                        principalColumn: "cod_serial_costumer");
+                        principalColumn: "cod_serial_usuario");
                 });
 
             migrationBuilder.CreateIndex(
@@ -63,6 +84,9 @@ namespace BeautySalon.Infraestructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "costumer");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }
