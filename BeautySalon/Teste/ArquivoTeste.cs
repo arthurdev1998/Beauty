@@ -6,5 +6,6 @@ namespace BeautySalon.Teste
         public string Sakura { get; set; }
         public string Jiraya { get; set; }
         public string Tsunade { get; set; }
+        public string Orochimaru { get; set; }
     }
 }
